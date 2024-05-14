@@ -75,4 +75,4 @@ $N$ 個の離散値　$x_{1}$, $x_{2}$, ... $x_{N}$ をとる確率変数 $x$　
 - 離散型確率分布の場合
   $$Var[x] = \mathbb{E}[{(x - \mu)^2}] \\ = \sum_{k=1}^{N}(x_k - \mu)^2p(x_k)$$
 - 連続型確率分布の場合
-  $$Var[x] = \mathbb{E}[{(x - \mu)^2}] \\ = \int_{-\infin}^{\infin}(x - \mu)^2p(x)dx$$
+  $$Var[x] = \mathbb{E}[{(x - \mu)^2}] \\ = \int_{-\infty}^{\infty}(x - \mu)^2p(x)dx$$
