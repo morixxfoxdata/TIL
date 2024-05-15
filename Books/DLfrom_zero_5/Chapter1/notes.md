@@ -77,3 +77,58 @@ $N$ 個の離散値　$x_{1}$, $x_{2}$, ... $x_{N}$ をとる確率変数 $x$　
   $$Var[x] = \mathbb{E}[{(x - \mu)^2}] \\ = \sum_{k=1}^{N}(x_k - \mu)^2p(x_k)$$
 - 連続型確率分布の場合
   $$Var[x] = \mathbb{E}[{(x - \mu)^2}] \\ = \int_{-\infty}^{\infty}(x - \mu)^2p(x)dx$$
+
+## 1.2 正規分布(ガウス分布)
+
+### 1.2.1 正規分布の確率密度関数
+
+正規分布は連続型の確率分布. ここでは確率変数 $x$ が, 平均 $\mu$ , 標準偏差 $\sigma$ の
+正規分布に従うと仮定する.
+この時の正規分布の確率密度関数は
+
+$$
+p(x) =　\frac{1}{\sqrt{2\pi}\sigma}\exp({-\frac{(x-\mu)^2}{2\sigma^2}})
+$$
+
+確率密度関数は $x$ を引数として確率密度を返す関数.
+正規分布の形状は $\mu$ と $\sigma$ で決まる. これらをパラメータという.
+このような関係から以下のように記述する.
+
+$$
+p(x;\mu, \sigma) =　\frac{1}{\sqrt{2\pi}\sigma}\exp({-\frac{(x-\mu)^2}{2\sigma^2}})
+$$
+
+### 1.2.2 正規分布のコード
+
+```Python
+import numpy as np
+
+def normal(x, mu=0, sigma=1):
+y = 1 / (np.sqrt(2 _ np.pi) _ sigma) _ np.exp(-(x - mu)\*\*2 / (2 _ sigma\*\*2))
+return y
+```
+
+上記のコードは平均 0, 標準偏差が 1 の正規分布でこれを特に**標準正規分布**と呼ばれている.
+
+```Python
+x = np.linspace(-5, 5, 100)
+y = normal(x)
+
+plt.plot(x, y)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.savefig(img_path)
+plt.show()
+```
+
+![alt text](img/plot4.png)
+
+### 1.2.3 パラメータの役割
+
+標準偏差を固定し, $\mu$ を変化させる.
+![alt text](img/plot5.png)
+
+平均を固定し, $\sigma$ を変化させる.
+![alt text](img/plot6.png)
+
+標準偏差を変更すると山の形が変化し, 平均を変更すると最大値の位置が変化する.
