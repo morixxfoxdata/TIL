@@ -2,6 +2,7 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import ArtistAnimation
+
 class GhostImaging:
     """
     params
@@ -29,6 +30,7 @@ class GhostImaging:
         # for animation
         self.fig = plt.figure()
         self.frames = []
+        # self.ani = ArtistAnimation(self.fig, self.frames, interval=10)
     
     def simulate_gi(self, pattern_num: int, frame_num: int, use_average: bool = False):
         # Reconstruction obj
@@ -134,7 +136,7 @@ def main():
     (3) 結果表示
     save_path: gifを保存するパス
     '''
-    gi.show_results(save_path = "GIsimulation/")
+    gi.show_results(save_path = "./")
 
 if __name__ == "__main__":
     main()
