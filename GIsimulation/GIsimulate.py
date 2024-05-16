@@ -51,7 +51,7 @@ class GhostImaging:
 
             # Reconstruct img from recieved intensity
             if (use_average):
-                intensities.append(intensity)
+                intensities = np.append(intensities, intensity)
                 recon_obj, pattern_sum = self.reconstruction_with_avg(intensity, intensities,
                                                                       pattern, pattern_sum, recon_obj)
             else:
@@ -59,7 +59,7 @@ class GhostImaging:
             
             # Evaluation with MSE
             mse = self.mean_squared_error()
-            self.evals.append(mse)
+            self.evals = np.append(self.evals, mse)
 
             if number_of_patterns % int(pattern_num / frame_num) == 0:
                 print(f'number of patterns: {number_of_patterns}, MSE: {mse:.4f}')
@@ -134,7 +134,7 @@ def main():
     (3) 結果表示
     save_path: gifを保存するパス
     '''
-    gi.show_results(save_path = "./")
+    gi.show_results(save_path = "GIsimulation/")
 
 if __name__ == "__main__":
     main()
