@@ -134,3 +134,60 @@ plt.show()
 ![alt text](img/plot6.png)
 
 標準偏差を変更すると山の形が変化し, 平均を変更すると最大値の位置が変化する.
+
+## 1.3 中心極限定理
+
+### 1.3.1 中心極限定理とは
+
+ある確率変数 $x$ が確率分布 $p(x)$ に従うと仮定する.
+(この確率分布は任意で構わない)
+次にこの分布からランダムに $N$ 個のサンプルを取り平均をとる.
+これを **サンプル平均(標本平均)** という.
+サンプル平均 $\mu$, 分散 $\sigma^2$
+
+$$
+{x^{(1)}, x^{(2)},..., x^{(N)}}
+$$
+
+$$
+\bar{x} = \frac{x^{(1)}+x^{(2)}+...+x^{(N)}}{N}
+$$
+
+サンプル平均をとる操作の回数を増やしていくと, サンプル平均の分布は正規分布に近づく. これを **中心極限定理** という.
+
+### 1.3.2 中心極限定理の実証
+
+matplotlib, numpy を用いて一様分布から乱数を生成し, 中心極限定理を実証する.
+
+```Python
+def sample_avg(size, num_sampling):
+    x_means = []
+    for _ in range(num_sampling):
+        xs = []
+        for i in range(size):
+            x = np.random.rand()
+            xs.append(x)
+        mean = np.mean(xs)
+        x_means.append(mean)
+
+    plt.hist(x_means, bins='auto', density=True)
+    # if density is True, return probability density
+    plt.ylim(0, 3)
+    plt.title(f'N={size}')
+    plt.show()
+```
+
+`size`は標本平均をとるためにサンプリングした数. `num_sampling`はサンプリング平均をした数.
+
+![alt text](img/plt1_9.png)
+
+`size`が $1$ の時は一様分布を示している. これをさらに増やしていく.
+
+![alt text](img/plt1_10.png)
+
+`size`が $10$ になると正規分布らしくなっていくのがわかる.
+さらに`size`が $4$ の時をプロットして比較すると正規分布の山が段々と鋭くなる(分散が小さくなる)のがわかる.
+
+![alt text](img/plt1_10_2.png)
+
+## 1.4 サンプル和の確率分布
