@@ -104,8 +104,8 @@ $$
 import numpy as np
 
 def normal(x, mu=0, sigma=1):
-y = 1 / (np.sqrt(2 _ np.pi) _ sigma) _ np.exp(-(x - mu)\*\*2 / (2 _ sigma\*\*2))
-return y
+    y = 1 / (np.sqrt(2 * np.pi) * sigma) * np.exp(-(x - mu)**2 / (2 * sigma**2))
+    return y
 ```
 
 上記のコードは平均 0, 標準偏差が 1 の正規分布でこれを特に**標準正規分布**と呼ばれている.
@@ -146,7 +146,9 @@ plt.show()
 サンプル平均 $\mu$, 分散 $\sigma^2$
 
 $$
+`
 {x^{(1)}, x^{(2)},..., x^{(N)}}
+`
 $$
 
 $$
@@ -191,3 +193,56 @@ def sample_avg(size, num_sampling):
 ![alt text](img/plt1_10_2.png)
 
 ## 1.4 サンプル和の確率分布
+
+ここまでで, ${x^{(1)}, x^{(2)},..., x^{(N)}}$ のサンプル平均は, $N$ を大きくすると平均 $\mu$ , 分散 $\frac{\sigma^2}{N}$ の正規分布に近づくことがわかった.
+
+次に考えるのは, サンプル平均ではなく**サンプル和**である.
+サンプル和は以下の式で表せる.
+
+$$
+s = x^{(1)} + x^{(2)} + ... x^{(N)}
+$$
+
+### 1.4.1 サンプル和の期待値と分散
+
+サンプル和は単純にサンプル平均を $N$ 倍したものであるから
+
+$$
+\mathbb{E}[s] = \mathbb{E}[N\bar{x}] = N\mu
+$$
+
+$$
+Var[s] = Var[N\bar{x}] = \mathbb{E}[(N\bar{x}-N\mu)^2] \\
+= \mathbb{E}[N^2(\bar{x}-\mu)^2] \\
+= N^2Var[\bar{x}] = N\sigma^2
+$$
+
+以上より, サンプル和の分布は平均 $N\mu$ , 分散 $N\sigma^2$ の正規分布に近づくことがわかる.
+
+### 1.4.2 コードで確かめる
+
+![alt text](img/plt1_12.png)
+
+N=5 として一様分布のサンプル和の分布を確かめると, 正規分布に従うことがわかる.
+
+一様分布の平均と分散はそれぞれ $\frac{1}{2}, \frac{1}{12}$ であるから, 正規分布の平均と分散はそれの N 倍になる.
+
+### 1.4.3 一様分布の平均と分散
+
+積分で求められる.
+
+$$
+\mu = \int_{-\infty}^{\infty}xp(x)dx \\
+= \int_{-\infty}^{0}xp(x)dx + \int_{0}^{1}xp(x)dx + \int_{1}^{\infty}xp(x)dx \\
+=\int_{0}^{1}xdx \\
+= \left[ \frac{1}{2}x^2 \right]_0^1 \\
+= \frac{1}{2}
+$$
+
+分散も同様に.
+
+$$
+\sigma^2 = \int_{-\infty}^{\infty}(x-\mu)^2p(x)dx \\
+=\int_{0}^{1}\left(x-\frac{1}{2}\right)^2dx \\
+= \frac{1}{12}
+$$
