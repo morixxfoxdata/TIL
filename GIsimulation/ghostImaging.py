@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import ArtistAnimation
-
+import os
 class GhostImaging:
 
     def __init__(self, input_img_path: str, img_width: int, img_height: int):
@@ -110,7 +110,8 @@ def main():
     img_width     : 撮像対象の幅（この大きさにリサイズする）
     img_height    : 撮像対象の高さ（この大きさにリサイズする）
     '''
-    gi = GhostImaging(input_img_path = './GI.png', img_width = 16, img_height = 16)
+    path = os.path.join(os.path.dirname(__file__), 'GI_16x16_white_on_black.png')
+    gi = GhostImaging(input_img_path = path, img_width = 16, img_height = 16)
 
     '''
     (2) ゴーストイメージング開始
@@ -118,13 +119,13 @@ def main():
     frame_num  : gif化する際のフレームの総数(> 1)
     use_average: 再構成時に全強度の平均値を使うか？(デフォルトはFalseで使わない)
     '''
-    gi.simulate_gi(pattern_num = 100000, frame_num = 50, use_average = True)
+    gi.simulate_gi(pattern_num = 100000, frame_num = 50, use_average = False)
 
     '''
     (3) 結果表示
     save_path: gifを保存するパス
     '''
-    gi.show_results(save_path = "./")
+    gi.show_results(save_path = os.path.dirname(__file__))
 
 if __name__ == "__main__":
     main()
