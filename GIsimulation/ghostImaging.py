@@ -119,7 +119,7 @@ def main():
     frame_num  : gif化する際のフレームの総数(> 1)
     use_average: 再構成時に全強度の平均値を使うか？(デフォルトはFalseで使わない)
     '''
-    gi.simulate_gi(pattern_num = 100000, frame_num = 50, use_average = False)
+    gi.simulate_gi(pattern_num = 10000, frame_num = 50, use_average = False)
 
     '''
     (3) 結果表示
