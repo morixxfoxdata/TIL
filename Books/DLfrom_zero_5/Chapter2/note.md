@@ -119,5 +119,7 @@ $$
 \log{p(D;\mu, \sigma)} = \log{\prod_{n=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{(x^{(n)}-\mu)^2}{2\sigma^2}\right)} \\
 = \log{\prod_{n=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}} + \log{\prod_{n=1}^{N}\exp\left(-\frac{(x^{(n)}-\mu)^2}{2\sigma^2}\right)} \\
 = \log\left(\frac{1}{\sqrt{2\pi}\sigma}\right)^{N} + \sum_{n=1}^{N}-\frac{(x^{(n)}-\mu)^2}{2\sigma^2} \\
-= -\frac{N}{2}\log{2\pi\sigma^2} - \frac{1}{2\sigma^2}\sum_{n=1}^{N}
+= -\frac{N}{2}\log{2\pi\sigma^2} - \frac{1}{2\sigma^2}\sum_{n=1}^{N}(x^{(n)}-\mu)^2 \\
 $$
+
+ここで最後の式の $\mu$ に注目すると, **対数尤度は $\mu$ の 2 次関数である**ことがわかる.
