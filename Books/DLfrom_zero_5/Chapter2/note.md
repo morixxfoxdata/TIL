@@ -54,3 +54,70 @@ print(sigma)
 先ほどのヒストグラムに対してサンプルの標準偏差と平均を用いた正規分布を合わせてプロットする.
 
 ![alt text](img/2_6.png)
+
+## 2.3 最尤推定の理論
+
+先ほどの事例ではサンプルから正規分布のパラメータを推定した.
+具体的には以下の通り.
+
+$$
+\hat{\mu} = \frac{1}{N}\sum_{n=1}^{N}x^{(n)}
+$$
+
+$$
+\hat{\sigma} = \sqrt{\frac{1}{N}\sum_{n=1}^{N}(x^(n) - \hat{\mu})^2}
+$$
+
+推定した値にはハットをつけることにする.
+
+### 2.3.1 尤度の最大化
+
+パラメータ $\theta$ によって形状が決まる確率分布があるとき, データ $x$ が得られる確率密度は
+$p(x; \theta)$
+
+サンプル 1-N が先ほどの確率密度に従って**独立に**生成されると仮定すると
+
+$$
+p(D;\theta) = p(x^{(1)};\theta) p(x^{(2)};\theta)...p(x^{(N)};\theta)
+$$
+
+またこの　$p(D;\theta)$ はパラメータ $\theta$ を引数としてデータサンプル D を生成する関数として定義できる.
+
+$$
+L(\theta) = p(D; \theta)
+$$
+
+この $L(\theta)$ は**尤度(likelihood), 尤度関数(likelihood function)**という.
+
+最尤推定は, 尤度 $ p(D; \theta)$ を最大化するパラメータ $\theta$ を見つける手法.
+最大化するパラメータ $\theta = \hat{\theta}$ であるときモデルがサンプルに最もフィットする.
+
+最尤推定は尤度の対数を最大化することが多い(計算の利便性)
+
+### 2.3.2 微分を使って最大値を探す
+
+省略
+
+### 2.3.3 正規分布の最尤推定
+
+正規分布の式
+
+$$
+N(x;\mu, \theta) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+$$
+
+ここで n 個のサンプルが得られたとしてそれが正規分布に従うと仮定する.
+この時の尤度は
+
+$$
+p(D;\mu, \sigma) = \prod_{n=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{(x^{(n)}-\mu)^2}{2\sigma^2}\right)
+$$
+
+ここから対数尤度を求める.
+
+$$
+\log{p(D;\mu, \sigma)} = \log{\prod_{n=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{(x^{(n)}-\mu)^2}{2\sigma^2}\right)} \\
+= \log{\prod_{n=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}} + \log{\prod_{n=1}^{N}\exp\left(-\frac{(x^{(n)}-\mu)^2}{2\sigma^2}\right)} \\
+= \log\left(\frac{1}{\sqrt{2\pi}\sigma}\right)^{N} + \sum_{n=1}^{N}-\frac{(x^{(n)}-\mu)^2}{2\sigma^2} \\
+= -\frac{N}{2}\log{2\pi\sigma^2} - \frac{1}{2\sigma^2}\sum_{n=1}^{N}
+$$
