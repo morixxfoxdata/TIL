@@ -132,3 +132,45 @@ $$
 $$
 
 ここで最後の式の $\mu$ に注目すると, **対数尤度は $\mu$ の 2 次関数である**ことがわかる.
+
+この 2 次関数は係数が負であるため微分が 0 の場所に最大値が存在する.
+
+$L(\mu;\sigma) = \log{p(D;\mu, \sigma)}$ と定義すると, $\frac{\partial L}{\partial \mu}$ は
+
+$$
+\frac{\partial L}{\partial \mu} = \frac{1}{\sigma^2}\sum_{n=1}^{N}(x^{(n)} - \mu)
+$$
+
+これが 0 である時の $\mu$ を計算する.
+
+$$
+\frac{1}{\sigma^2}\sum_{n=1}^{N}(x^{(n)} - \mu) = 0
+$$
+
+$$
+\Leftrightarrow \sum_{n=1}^{N}(x^{(n)} - \mu) = 0
+$$
+
+$$
+\Leftrightarrow \sum_{n=1}^{N}\mu = \sum_{n=1}^{N}x^{(n)}
+$$
+
+$$
+\Leftrightarrow N\mu = \sum_{n=1}^{N}x^{(n)}
+$$
+
+$$
+\therefore \mu = \frac{1}{N}\sum_{n=1}^{N}x^{(n)}
+$$
+
+つまり正規分布の平均はサンプル平均である時に対数尤度が最大になる.
+
+$\sigma$ についても, $\mu = \hat{\mu}$ であるという条件のもとで $\sigma$ について微分すれば解析的に求められる.
+
+すると
+
+$$
+\hat{\sigma} = \sqrt{\frac{1}{N}\sum_{n=1}^{N}(x^{(n)}-\hat{\mu})^2}
+$$
+
+と求められる.
