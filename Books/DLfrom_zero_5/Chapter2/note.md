@@ -174,3 +174,60 @@ $$
 $$
 
 と求められる.
+
+## 2.4 生成モデルの用途
+
+先ほど推定したパラメータを用いたモデルで何ができるか？
+
+### 2.4.1 新しいデータの生成
+
+![alt text](img/2_8.png)
+
+新たなデータを 10000 生成して, 実際のデータと同時にプロットした.
+これは単純な一次元データでの生成だが, 2 次元画像データなどを生成するには
+モデルを大量に学習させることで可能になる.
+
+### 2.4.2 確率の計算
+
+確率分布がわかれば, ある値がどれほど起こりやすいかがわかる.
+これは確率密度関数の積分で定義される.
+
+Scipy ライブラリには, 正規分布の積分を解析的に求める関数が用意されている.
+
+累積分布関数を求める関数である.
+
+$$
+F(x) = \int_{-\infty}^{x}f(t)dt
+$$
+
+```Python
+scipy.stats.norm.cdf(x, loc=0, scale=1)
+```
+
+x: x 以下が発生する確率をプロットする
+loc: 平均
+scale: 標準偏差
+
+```Python
+import os
+import numpy as np
+from scipy.stats import norm
+
+path = os.path.join(os.path.dirname(__file__), 'height.txt')
+xs = np.loadtxt(path)
+
+mu = np.mean(xs)
+sigma = np.std(xs)
+
+p1 = norm.cdf(160, loc=mu, scale=sigma)
+print('p(x <= 160):', p1)
+
+p2 = norm.cdf(180, loc=mu, scale=sigma)
+print('p(x > 180):', 1-p2)
+```
+
+実行結果
+p(x <= 160): 0.004271406830855
+p(x > 180): 0.06541774339950823
+
+ドアの高さを何センチにしたら何%の人間が通れるかなどというように定量的に評価できる.
