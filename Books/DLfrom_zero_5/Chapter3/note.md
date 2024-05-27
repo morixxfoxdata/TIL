@@ -169,3 +169,108 @@ plt.show()
 ![alt text](3_13.png)
 
 共分散行列を変更した時にどのような変化があるか調べる.
+
+## 3.4 多次元正規分布の最尤推定
+
+### 3.4.1 最尤推定を行う
+
+D 次元のベクトル $x$ の正規分布の式は以下のようになる.
+
+$$
+\mathcal{N}(\bm{x};\bm{\mu}, \Sigma) = \frac{1}{\sqrt{(2\pi)^{D}|\Sigma|}}\exp{\lbrace -\frac{1}{2}(\bm{x} - \bm{\mu})^\top \Sigma^{-1}(\bm{x} - \bm{\mu})\rbrace}
+$$
+
+正規分布より得られるサンプル $\mathcal{D} = \lbrace{\bm{x}^{(1)}, \bm{x}^{(2)}, \dots , \bm{x}^{(N)}}\rbrace$ が得られたとき, このサンプルから得られる確率密度は次の式で表される.
+
+$$
+p(\mathcal{D};\bm{\mu},\Sigma) = \mathcal{N}(x^{(1)};\bm{\mu},\Sigma) \mathcal{N}(x^{(2)};\bm{\mu},\Sigma) \dots \mathcal{N}(x^{(N)};\bm{\mu},\Sigma)
+$$
+
+$$
+= \prod_{n=1}^{N}\mathcal{N}(\bm{x}^{(n)};\bm{\mu},\Sigma)
+$$
+
+$p(\mathcal{D};\bm{\mu},\Sigma)$ は, パラメータを $\bm{\mu}, \Sigma$ とした場合に, サンプル $\mathcal{D}$ が得られる確率密度を表す.
+これを**尤度**という. 最尤推定では尤度を最大化する $\bm{\mu}, \Sigma$ を求める.
+
+計算の都合上, 対数尤度をとった方が都合がいいので
+
+$$
+L(\bm{\mu}, \Sigma) = \log{p(\mathcal{D;\bm{\mu},\Sigma})}
+$$
+
+として, 尤度の最大値を求めていく.
+
+$$
+\frac{\partial{L}}{\partial{\bm{\mu}}} = 0 \qquad \frac{\partial{L}}{\partial{\Sigma}} = 0
+$$
+
+ここで, $L(\bm{\mu}, \Sigma)$ はスカラ, $\bm{\mu}$ はベクトル, $\Sigma$ は行列である.
+
+これらの勾配について書き下すと以下のようになる.
+
+$$
+\bm{\mu} =
+\begin{pmatrix}
+\mu_{1} \\
+\mu_{2} \\
+\vdots \\
+\mu_{D}
+\end{pmatrix}
+\qquad
+\frac{\partial{L}}{\partial{\mu}} =
+\begin{pmatrix}
+    \frac{\partial{L}}{\partial{\mu_{1}}} \\
+    \ \\
+    \frac{\partial{L}}{\partial{\mu_{2}}} \\
+    \ \\
+    \vdots \\
+    \ \\
+    \frac{\partial{L}}{\partial{\mu_{D}}}
+\end{pmatrix}
+$$
+
+$$
+\Sigma =
+\begin{pmatrix}
+    \sigma_{11} & \dots & \sigma_{1i} & \dots & \sigma_{1D} \\
+    \vdots & & \vdots & & \vdots \\
+    \sigma_{i1} & \dots & \sigma_{ii} & \dots & \sigma_{iD} \\
+    \vdots & & \vdots & & \vdots \\
+    \sigma_{D1} & \dots & \sigma_{Di} & \dots & \sigma_{DD} \\
+\end{pmatrix} \qquad
+\frac{\partial{L}}{\partial{\Sigma}}=
+\begin{pmatrix}
+    \frac{\partial{L}}{\partial{\sigma_{11}}} & \dots & \frac{\partial{L}}{\partial{\sigma_{1i}}} & \dots & \frac{\partial{L}}{\partial{\sigma_{1D}}} \\
+    \vdots & & \vdots & & \vdots \\
+    \frac{\partial{L}}{\partial{\sigma_{i1}}} & \dots & \frac{\partial{L}}{\partial{\sigma_{ii}}} & \dots & \frac{\partial{L}}{\partial{\sigma_{iD}}} \\
+    \vdots & & \vdots & & \vdots \\
+    \frac{\partial{L}}{\partial{\sigma_{D1}}} & \dots & \frac{\partial{L}}{\partial{\sigma_{Di}}} & \dots & \frac{\partial{L}}{\partial{\sigma_{DD}}} \\
+\end{pmatrix}
+$$
+
+$\frac{\partial{L}}{\partial{\bm{\mu}}} = 0$ と $\frac{\partial{L}}{\partial{\Sigma}} = 0$ の二つは解析的に解くことが可能.
+
+解析的に解くと以下の解を得ることができる.
+
+$$
+\hat{\bm{\mu}} = \frac{1}{N}\sum_{n=1}^{N}\bm{x}^{(n)}
+$$
+
+$$
+\hat{\Sigma} = \frac{1}{N}\sum_{n=1}^{N}(\bm{x}^{(n)}-\hat{\bm{\mu}})(\bm{x}^{(n)}-\hat{\bm{\mu}})^\top
+$$
+
+### 3.4.2 最尤推定の実装
+
+![alt text](Memo.jpeg)
+
+### 3.4.3 実データを使う
+
+height_weight.txt ファイルのサンプルを用いて散布図をプロットする.
+
+![alt text](3_16.png)
+
+身長と体重に相関がありそうで, 2 次元正規分布としてうまく表現できそう.
+
+![alt text](3_17.png)
