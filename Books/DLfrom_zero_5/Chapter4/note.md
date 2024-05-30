@@ -152,3 +152,62 @@ $$
 右辺は $z=k$ の多次元正規分布を表す.
 
 生成モデルの目標は, 観測データ $x$ の確率分布 $p(x)$ を表すこと.
+GMM の場合は確率の周辺化により, $p(x, y)$ を使って $p(x)$ を表すことができる.
+
+$$
+p(x) = \sum_{k=1}^{K}p(\bm{x}, z=k)
+$$
+
+同時確率 $p(\bm{x}, z=k)$ は次の式で表される.
+
+$$
+p(\bm{x}, z=k) = p(z = k) \space p(\bm{x}|z=k)
+$$
+
+$$
+= \phi_k \space \mathcal{N}(\bm{x};\bm{\mu}_k, \Sigma_k)
+$$
+
+これが GMM の式となる. 各正規分布に対して $\phi_k$ が重み付けされ, それらを全て足し合わせる.
+
+### 4.3.3 GMM の実装
+
+```Python
+import numpy as np
+
+# 平均行列
+mus = np.array([[2.0, 54.50],
+                [4.3, 80.0]])
+
+# 共分散行列
+covs = np.array([[[0.07, 0.44],
+                  [0.44, 33.7]],
+                  [[0.17, 0.94],
+                   [0.94, 36.00]]])
+
+# カテゴリカル
+phis = np.array([0.35, 0.65])
+
+# 多次元正規分布
+def multivariate_normal(x, mu, cov):
+    inv = np.linalg.inv(cov)
+    det = np.linalg.det(cov)
+    d = len(x)
+    z = 1 / np.sqrt((2 * np.pi) ** d * det)
+    y = z * np.exp((x - mu).T @ inv @ (x - mu) / -2.0)
+    return y
+
+def gmm(x, phis, mus, covs):
+    K = len(phis)
+    y = 0
+    for k in range(K):
+        phi, mu, cov = phis[k], mus[k], covs[k]
+        y += phi * multivariate_normal(x, mu, cov)
+    return y
+```
+
+これを可視化してみる.
+
+![alt text](4_9.png)
+
+今回は `phis = [0.35, 0.65]` としていることで山の高さに差が出ている.
