@@ -211,3 +211,41 @@ def gmm(x, phis, mus, covs):
 ![alt text](4_9.png)
 
 今回は `phis = [0.35, 0.65]` としていることで山の高さに差が出ている.
+
+## 4.4 パラメータ推定の難所
+
+GMM のモデリングのためにはパラメータ推定が必要だが, この問題は簡単には解けない.
+
+### 4.4.1 GMM パラメータ推定
+
+GMM の式は以下のように表せる.
+
+$$
+p(\bm{x}|z = k;\bm{\mu}, \Sigma) = \sum_{k=1}^{N} \phi_k \space \mathcal{N}(\bm{x};\bm{\mu}_k, \Sigma_k)
+$$
+
+ここで, サンプル $\mathcal{D} = \lbrace{\bm{x}^{(1)}, \bm{x}^{(2)}, \dots , \bm{x}^{(N)}}\rbrace$ が得られた場合を考える.
+また, パラメータ $\{\phi, \bm{\mu}, \Sigma\}$ はまとめて $\theta$ で表すことにする.
+この時, 尤度は以下のように表される.
+
+$$
+p(\mathcal{D};\bm{\theta}) = p(\bm{x}^{(1)}; \bm{\theta})p(\bm{x}^{(2)}; \bm{\theta})\dots p(\bm{x}^{(N)}; \bm{\theta})
+$$
+
+最尤推定を行うゴールとしては尤度(対数尤度)を最大化するパラメータ $\bm{\theta}$ を見つけること.
+
+$$
+\log p(\mathcal{D;\bm{\theta}})= \log \prod_{n=1}^{N}p(\bm{x}^{(n)}; \bm{\theta})
+$$
+
+$$
+= \sum_{n=1}^{N}\log p(\bm{x}^{(n)}; \bm{\theta})
+$$
+
+$$
+=\sum_{n=1}^{N}\log \left(\sum_{k=1}^{K}\phi_k \space \mathcal{N}(\bm{x};\bm{\mu}_k, \Sigma_k) \right)
+$$
+
+単純な問題であれば各パラメータに関する勾配を求めて, それを 0 に設定した方程式を解くことができる.
+しかし GMM のパラメータ推定は解析的には解けない.
+ここで EM アルゴリズムが登場. EM アルゴリズムによって, GMM のような潜在変数のあるモデルにおいて, 対数尤度を大きくするパラメータを効率的に見つけることができる.
