@@ -158,3 +158,89 @@ $$
 $$
 
 左辺が KL ダイバージェンスを最小化する $\theta$ で, 右辺は対数尤度が最大となる $\theta$ である. この二つが等しいことが示された.
+
+## 5.2 EM アルゴリズムの導出 ①
+
+目的：混合ガウスモデルのパラメータ推定
+
+### 5.2.1 潜在変数を持つモデル
+
+ここでは観測できる確率変数を $x$, 潜在変数を $z$, パラメータを $\theta$ で表す.
+この時, 一つのデータに対する対数尤度は, 確率の周辺化により
+
+$$
+\log p_\theta(x) = \log\sum_{z}p_\theta(x, z)
+$$
+
+ここでは潜在変数が離散と仮定しているが, 連続な場合は積分になるだけ.
+
+次に, サンプル $\mathcal{D} = \lbrace{x^{(1)}, x^{(2)}, \dots , x^{(N)}}\rbrace$ が得られた場合を考える.
+この時の対数尤度は
+
+$$
+\log p_\theta(\mathcal{D}) = \sum_{n=1}^{N}\log p_{\theta}(x^{(n)})
+$$
+
+$$
+= \sum_{n=1}^{N}\log \sum_{x^{(n)}}p_\theta(x^{(n)}, z^{(n)})
+$$
+
+上記の対数尤度を最大化したいが, "log-sum" の形になっており解析的に解けない.
+EM アルゴリズムはこの問題を"sum-log"に変換することで解決する.
+
+まずは 1 つのデータ $x$ に関する対数尤度について考える. 対数尤度が複雑な形をとる理由としては"log-sum"の形をしているから.
+"log-sum"の形を解決するために確率の乗法定理を利用すると
+
+$$
+\log p_\theta(x) = \log \frac{p_\theta(x, z)}{p_\theta(z|x)}
+$$
+
+一見"log-sum"を解決しているように見えるが, 分母がベイズの定理より
+
+$$
+p_\theta(z|x) = \frac{p_\theta(x, z)}{\sum_z p_\theta(x, z)}
+$$
+
+結局"log-sum"の形となる.
+
+### 5.2.2 任意の確率分布 $q(z)$
+
+任意の確率分布を $p_\theta(z|x)$ の近似分布として導入する.
+
+ここでは, $p_\theta(z|x)$ の代わりに $q(z)$ を使うために以下のようにする.
+
+$$
+\log p_\theta(x) = \log \frac{p_\theta(x, z)}{p_\theta(z|x)}
+$$
+
+$$
+= \log \frac{p_\theta(x, z)q(z)}{p_\theta(z|x)q(z)}
+$$
+
+$$
+= \log \frac{p_\theta(x, z)}{q(z)} + \log \frac{q(z)}{p_\theta(z|x)}
+$$
+
+第 1 項からは厄介な条件付き確率を消せたが, 第 2 項には残っている.
+
+ここで第 2 項を KL ダイバージェンスの形式に変形することができれば先の見通しが立つ.
+
+$$
+\log p_\theta(x) = \log p_\theta(x)\sum_{z}q(z)
+$$
+
+$$
+= \sum_{z}q(z)\log p_\theta(x)
+$$
+
+$$
+= q(z) \left(\log \frac{p_\theta(x, z)}{q(z)} + \log \frac{q(z)}{p_\theta(z|x)} \right)
+$$
+
+$$
+= \sum_{z}q(z)\log \frac{p_\theta(x, z)}{q(z)} + \sum_{z}q(z)\log \frac{q(z)}{p_\theta(z|x)}
+$$
+
+$$
+= \sum_{z}q(z)\log \frac{p_\theta(x, z)}{q(z)} + D_{KL}(q(z) \| p_\theta (z|x))
+$$
