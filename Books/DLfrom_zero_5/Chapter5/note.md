@@ -330,3 +330,68 @@ N 個の観測データ $\lbrace{x^{(1)}, x^{(2)}, \dots , x^{(N)}}\rbrace$ に�
 1. E ステップ：$\{q^{(1)}, q^{(2)}, \dots, q^{(N)}\}$ の更新( $\theta$ は固定)
 2. M ステップ： $\theta$ の更新(解析的に ELBO が最大となる $\theta$ を求める)
 3. 終了判定：対数尤度（の平均）を計算し, 前回の対数尤度と比較する
+
+## 5.4 GMM と EM アルゴリズム
+
+### 5.4.1 EM アルゴリズムの E ステップ
+
+GMM の復習から.
+ここでは観測変数を $x$ , 潜在変数を $z$ として $z$ は 1 から K までの離散値を取る確率変数とする.
+そして, GMM のパラメータを $\theta = \{\phi,\bm{\mu}, \bm{\Sigma}\}$ で表す. これらのパラメータは K 個の要素を持つ.
+(確認: GMM が K 個のガウス分布からなると仮定するものだから)
+
+$$
+\phi = \{\phi_1,\phi_2, \dots, \phi_K\}
+$$
+
+$$
+\bm{\mu} = \{\mu_1,\mu_2, \dots, \mu_K\}
+$$
+
+$$
+\bm{\Sigma} = \{\Sigma_1,\Sigma_2, \dots, \Sigma_K\}
+$$
+
+GMM の尤度は K 個のガウス分布の尤度の和で表される.
+
+$$
+p(\bm{x};\bm{\theta}) = \sum_{j=1}^{K}p(\bm{x},z=j;\bm{\theta})
+$$
+
+$$
+= \sum_{j=1}^{K}p(z=j;\bm{\theta})p(\bm{x}|z=j;\bm{\theta})
+$$
+
+$$
+= \sum_{j=1}^{K}\phi_j \mathcal{N}(\bm{x};\bm{\mu}_j,\Sigma_j)
+$$
+
+ここで $N$ 個のデータ $\{\bm{x}^{(1)}, \bm{x}^{(2)}, \dots, \bm{x}^{(N)}\}$ が得られたとする.
+
+各データごとの対数尤度の平均は次の式で表される. この値により, EM アルゴリズムの更新の終了判定を行う.
+
+$$
+\frac{1}{N}\sum_{n=1}^{N}\log p(\bm{x}^{(n)};\bm{\theta}) = \frac{1}{N}\sum_{n=1}^{N}\log \sum_{j=1}^{K}\phi_j \mathcal{N}(\bm{x};\bm{\mu}_j,\Sigma_j)
+$$
+
+では EM アルゴリズムの E ステップから行う.
+E ステップでは $\{\phi,\bm{\mu}, \bm{\Sigma}\}$ は固定して, 確率分布 $q^{(n)}(z)$ を更新する.
+$q^{(n)}(z)$ は $\bm{x}^{(n)}$ が与えられたときの条件付き確率として求められる.
+
+$$
+q^{(n)}(z=k) = p(z=k|\bm{x}^{(n)};\bm\theta)
+$$
+
+$$
+= \frac{\phi_k \mathcal{N}(\bm{x}^{(n)};\bm{\mu}_k,\Sigma_k)}{\sum_{j=1}^{K}\phi_j \mathcal{N}(\bm{x}^{(n)};\bm{\mu}_j,\Sigma_j)}
+$$
+
+**E ステップ**
+各 $n, k$ に対して次の値を計算する
+
+$$
+q^{(n)}(k) = \frac{\phi_k \mathcal{N}(\bm{x}^{(n)};\bm{\mu}_k,\Sigma_k)}{\sum_{j=1}^{K}\phi_j \mathcal{N}(\bm{x}^{(n)};\bm{\mu}_j,\Sigma_j)}
+$$
+
+**M ステップ**
+ELBO を最大化するパラメータの更新
