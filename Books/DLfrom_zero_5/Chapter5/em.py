@@ -49,3 +49,45 @@ def likelihood(xs, phis, mus, covs):
         y = gmm(x, phis, mus, covs)
         L += np.log(y + eps)
     return L / N
+
+
+current_likelihood = likelihood(xs, phis, mus, covs)
+
+for iter in range(MAX_ITER):
+    # E-step
+    qs = np.zeros((N, K))
+    for n in range(N):
+        x = xs[n]
+        for k in range(K):
+            phi, mu, cov = phis[k], mus[k], covs[k]
+            qs[n, k] = phi * multivative_normal(x, mu, cov)
+        qs[n] /= gmm(x, phis, mus, covs)
+    
+    # M-step
+    qs_sum = qs.sum(axis=0)
+    for k in range(K):
+        # 1. phis
+        phis[k] = qs_sum[k] / N
+
+        # 2. mus
+        c = 0
+        for n in range(N):
+            c += qs[n, k] * xs[n]
+        mus[k] = c / qs_sum[k]
+
+        # 3. covs
+        c = 0
+        for n in range(N):
+            z = xs[n] - mus[k]
+            z = z[:, np.newaxis]    # 列ベクトルへ
+            c += qs[n, k] * z @ z.T
+        covs[k] = c / qs_sum[k]
+    
+    # 終了判定
+    print(f'{current_likelihood:.3f}')  # 対数尤度を出力
+
+    next_likelihood = likelihood(xs, phis, mus, covs)
+    diff = np.abs(next_likelihood - current_likelihood)     # 差分の絶対値
+    if diff < THESHOLD:
+        break
+    current_likelihood = next_likelihood
